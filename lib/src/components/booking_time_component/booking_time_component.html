@@ -1,0 +1,5 @@
+<div class="increment">
+    <div class="clickable" (click)="selectController.add(increment)" [class.isMargin]="isMargin">
+        {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
+    </div>
+</div>

@@ -1,0 +1,4 @@
+<div class="day-header"></div>
+<div *ngFor="let increment of day.increments" class="increment" [class.dark]="increment.startTime.minute == 0" [class.beforeNow]="isBeforeNow(increment.startTime)">
+    {{increment.startTime | date:'Hm'}}
+</div>

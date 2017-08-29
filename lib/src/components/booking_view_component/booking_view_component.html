@@ -1,0 +1,76 @@
+<material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
+
+    <!-- DAY -->
+    <material-tab label="{{'day' | phrase}}">
+        <div class="row">
+            <div class="columns">
+                <bo-day-stepper [(date)]="date"></bo-day-stepper>
+            </div>
+        </div>
+        <div class="row" *ngIf="activeTabIndex == 0">
+            <div class="columns">
+                <bo-schedule-day
+                        *ngIf="scheduleMode == true"
+                        [selectedState]="scheduleState"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date">
+                </bo-schedule-day>
+                <bo-booking-view-day
+                        *ngIf="scheduleMode == false"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = selectedBooking != null;">
+                </bo-booking-view-day>
+            </div>
+        </div>
+    </material-tab>
+
+    <!-- WEEK -->
+    <material-tab label="{{'week' | phrase}}">
+        <div class="row">
+            <div class="columns">
+                <bo-week-stepper [(date)]="date"></bo-week-stepper>
+            </div>
+        </div>
+        <div class="row" *ngIf="activeTabIndex == 1">
+            <div class="columns">
+                <bo-schedule-week
+                        *ngIf="scheduleMode == true"
+                        [selectedState]="scheduleState"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (dateClick)="openDayTab($event)"
+                        (changeWeek)="date = $event">
+                </bo-schedule-week>
+                <bo-booking-view-week
+                        *ngIf="scheduleMode == false"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (dateClick)="openDayTab($event)"
+                        (changeWeek)="date = $event"
+                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = selectedBooking != null;">
+                </bo-booking-view-week>
+            </div>
+        </div>
+    </material-tab>
+
+    <!-- MONTH -->
+    <material-tab label="{{'month' | phrase}}">
+        <bo-month-calendar
+                *ngIf="activeTabIndex == 2"
+                [user]="user"
+                [salon]="salon"
+                [date]="date"
+                (changeMonth)="date = $event"
+                (dateClick)="openWeekTab($event)">
+        </bo-month-calendar>
+    </material-tab>
+</material-tab-panel>
+
+<fo-modal [title]="'booking_details' | phrase" [(visible)]="showBookingDetailsModal">
+    <bo-booking-details (bookingChange)="showBookingDetailsModal = false" [booking]="selectedBooking"></bo-booking-details>
+</fo-modal>

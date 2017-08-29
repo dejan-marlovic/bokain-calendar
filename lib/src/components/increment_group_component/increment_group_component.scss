@@ -1,0 +1,26 @@
+div.container
+{
+  cursor: pointer;
+
+  div.increment > div
+  {
+    margin: 0 0.3rem;
+  }
+
+  div.increment.border-bottom
+  {
+    border-bottom-color: white;
+  }
+
+  div.increment.border-top
+  {
+    border-top-color: white;
+  }
+}
+
+div.container.noshow
+{
+  border-left: 4px solid red;
+  border-right: 4px solid red;
+}
+

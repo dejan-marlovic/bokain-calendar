@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="columns text-center">
+        <material-fab mini (trigger)="advance(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+        <material-dropdown-select
+                [buttonText]="date | date:'yyyy-MM-dd'"
+                [popupMatchInputWidth]="true">
+            <material-select-item
+                    *ngFor="let d of surroundingDates"
+                    [value]="d"
+                    [selected]="date == d"
+                    (trigger)="date = d">
+                {{d | date:'yyyy-MM-dd'}}
+            </material-select-item>
+        </material-dropdown-select>
+        <material-fab mini (trigger)="advance(1)"><glyph icon="chevron_right"></glyph></material-fab>
+    </div>
+</div>

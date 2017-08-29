@@ -1,0 +1,39 @@
+@import '../../../../../bokain-models/css/theme';
+
+div.increment
+{
+  position: relative;
+  opacity: 0.6;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div.increment:hover
+{
+  background-color: $color-2;
+}
+div.increment.open
+{
+  background-color: $color-1;
+  color: white;
+}
+div.increment.break
+{
+  background-color: lightgray;
+}
+div.increment.sick
+{
+  background-color: palevioletred;
+  color: white;
+}
+div.increment.booked
+{
+  opacity: 0.8;
+  font-weight: bold;
+}
+div.increment.highlight
+{
+  opacity: 1;
+}

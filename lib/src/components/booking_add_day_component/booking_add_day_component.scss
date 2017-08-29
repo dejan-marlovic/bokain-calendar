@@ -1,0 +1,21 @@
+:host > div
+{
+    min-height: 40rem;
+}
+
+p.no-available-times
+{
+  margin-top: 0.25rem;
+  font-size: 0.95em;
+  color: #888;
+}
+
+material-spinner
+{
+  position: absolute;
+  display: block;
+  margin: 0 auto;
+  top: 8em;
+  left: 0;
+  right: 0;
+}

@@ -1,0 +1,18 @@
+<table *ngIf="selectedUser != null">
+    <tbody>
+        <tr>
+            <td>
+                <bo-times></bo-times>
+            </td>
+            <td *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
+                <bo-booking-view-day
+                        [user]="selectedUser"
+                        [salon]="selectedSalon"
+                        [date]="weekDates[i]"
+                        (bookingSelect)="onBookingSelectController.add($event)"
+                        (dateClick)="onDateClickController.add($event)">
+                </bo-booking-view-day>
+            </td>
+        </tr>
+    </tbody>
+</table>

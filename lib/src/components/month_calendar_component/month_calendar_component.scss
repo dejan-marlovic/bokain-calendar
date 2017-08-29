@@ -1,0 +1,57 @@
+@import '../../../../../bokain-models/css/theme';
+
+#month-stepper
+{
+  span
+  {
+    display: inline-block;
+    width: 8rem;
+  }
+  material-fab
+  {
+    vertical-align: middle;
+  }
+}
+
+table
+{
+//  width: 100%;
+  table-layout: fixed;
+  tr:first-child
+  {
+    td
+    {
+      font-weight: bold;
+    }
+  }
+  tr
+  {
+    td.week
+    {
+      font-weight: bold;
+      background-color: #eee;
+    }
+    td
+    {
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      height: 2.5rem;
+      padding: 0.5rem;
+      color: #666;
+
+      div
+      {
+        line-height: 2.5rem;
+      }
+    }
+    td.highlighted
+    {
+      div
+      {
+        background-color: $color-1;
+        color: white;
+      }
+    }
+  }
+}

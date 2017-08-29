@@ -1,0 +1,68 @@
+<div *ngIf="booking != null">
+    <h2 class="margin-none">{{service?.name}}</h2>
+    <h4 *ngIf="addons.isNotEmpty" class="margin-top-none">{{addons.join(', ')}}</h4>
+    <table>
+        <tr>
+            <td>{{'time' | phrase}}:</td>
+            <td>{{booking.startTime | date:'yMMMMEEEEd'}} {{booking.startTime | date:'Hm'}} - {{booking.endTime | date:'Hm'}}</td>
+        </tr>
+        <tr>
+            <td>{{'location' | phrase}}:</td>
+            <td>{{salon.street}}, {{salon.city}} ({{room?.name}})</td>
+        </tr>
+        <tr>
+            <td>{{'employee' | phrase}}:</td>
+            <td>{{user}}</td>
+        </tr>
+        <tr>
+            <td>{{'price' | phrase}}:</td>
+            <td>{{totalPrice}}kr</td>
+        </tr>
+        <tr>
+            <td>{{'customer' | phrase}}:</td>
+            <td>{{customer?.firstname}} {{customer?.lastname}}</td>
+        </tr>
+        <tr>
+            <td>{{'phone' | phrase}}:</td>
+            <td>{{customer?.phone}}</td>
+        </tr>
+        <tr>
+            <td>{{'email' | phrase}}:</td>
+            <td>{{customer?.email}}</td>
+        </tr>
+    </table>
+
+    <p *ngIf="booking.id != null && showActionButtons == true">
+        <material-button raised (trigger)="rebook()" [disabled]="booking.noshow || booking.invoiceSent">{{'rebook' | phrase}}</material-button>
+        <material-button
+                raised
+                class="red"
+                (trigger)="confirmModalOpen = true">
+            {{'booking_cancel' | phrase}}
+        </material-button>
+        <material-button
+                raised
+                [disabled]="booking.invoiceSent"
+                class="red"
+                (trigger)="toggleNoshow()">
+            {{'no-show' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.noshow" size="medium"></glyph>
+        </material-button>
+        <material-button
+                raised
+                [disabled]="booking.invoiceSent"
+                *ngIf="booking.noshow"
+                (trigger)="generateInvoice()">
+            {{'send_invoice' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.invoiceSent" size="medium"></glyph>
+        </material-button>
+    </p>
+
+    <fo-modal
+            title="{{'confirm' | phrase}}"
+            [(visible)]="confirmModalOpen">
+        <p>{{'confirm_cancel_booking' | phrase}}</p>
+        <div class="text-right">
+            <material-button [disabled]="bookingService.loading" raised (trigger)="cancel()">{{'true' | phrase}}</material-button>
+            <material-button [disabled]="bookingService.loading" raised (trigger)="confirmModalOpen = false">{{'false' | phrase}}</material-button>
+        </div>
+    </fo-modal>
+</div>

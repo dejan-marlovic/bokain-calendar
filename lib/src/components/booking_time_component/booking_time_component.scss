@@ -1,0 +1,30 @@
+@import '../../../../../bokain-models/css/theme';
+
+div
+{
+  font-size: 1em;
+  padding: 0.1rem;
+}
+
+
+div.clickable
+{
+  color: $color-1;
+}
+
+div.clickable.isMargin
+{
+  color: $color-2-dark;
+}
+
+div.clickable:hover
+{
+  color: white;
+  background-color: $color-1;
+}
+
+div.closed
+{
+  color: $color-2;
+}
+

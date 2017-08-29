@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="s12 col text-center">
+        <material-fab mini (trigger)="advanceWeek(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+        <material-dropdown-select
+                buttonText="{{'week' | phrase}}&nbsp;{{date | week}}"
+                [popupMatchInputWidth]="false">
+            <material-select-item
+                    *ngFor="let d of surroundingDates"
+                    [value]="d"
+                    [selected]="date == d"
+                    (trigger)="date = d">
+                {{'week' | phrase}} {{d | week}}
+            </material-select-item>
+        </material-dropdown-select>
+        <material-fab mini (trigger)="advanceWeek(1)"><glyph icon="chevron_right"></glyph></material-fab>
+    </div>
+</div>

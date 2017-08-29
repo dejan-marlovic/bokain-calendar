@@ -1,0 +1,31 @@
+<div class="row" id="month-stepper">
+    <div class="s12 col text-center">
+        <material-fab mini (trigger)="advance(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+        <span>{{date | date:'MMMM' | phrase}} {{date.year}}</span>
+        <material-fab mini (trigger)="advance(1)"><glyph icon="chevron_right"></glyph></material-fab>
+    </div>
+</div>
+<div class="row margin-top-small">
+    <div *ngIf="salon != null" class="s12 col">
+        <table>
+            <tr>
+                <td></td>
+                <td *ngFor="let weekday of monthDays.getRange(0, 7)">
+                    {{weekday.startTime | date:'E'}}
+                </td>
+            </tr>
+            <tr *ngFor="let i of [0,1,2,3,4]">
+                <td class="week">
+                    v{{monthDays[i * 7].startTime | week}}
+                </td>
+                <td
+                        *ngFor="let day of monthDays.getRange(i * 7, (i * 7) + 7)"
+                        class="month-day"
+                        [class.highlighted]="highlighted(day)"
+                        (click)="onDateClickController.add(day.startTime)">
+                    <div>{{day.startTime | date:'d'}}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

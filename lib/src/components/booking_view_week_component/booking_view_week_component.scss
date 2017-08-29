@@ -1,0 +1,25 @@
+material-tab-panel
+{
+  min-width: 700px;
+}
+
+table
+{
+  tr
+  {
+    td
+    {
+      max-width: 6rem;
+    }
+
+    td:first-child
+    {
+      width: 2rem;
+    }
+  }
+}
+
+/deep/ div.day-header
+{
+  height: 7em;
+}

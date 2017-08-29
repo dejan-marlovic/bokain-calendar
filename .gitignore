@@ -76,3 +76,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+.idea
+
+*.css
+*.css.map

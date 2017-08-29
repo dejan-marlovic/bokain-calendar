@@ -1,0 +1,19 @@
+<table>
+    <tbody>
+        <tr>
+            <td *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
+                <bo-booking-add-day
+                    [user]="selectedUser"
+                    [salon]="selectedSalon"
+                    [service]="service"
+                    [serviceAddons]="serviceAddons"
+                    [date]="weekDates[i]"
+                    [totalDuration]="totalDuration"
+                    [includeMargins]="includeMargins"
+                    (dateClick)="onDateClickController.add($event)"
+                    (timeSelect)="onTimeSelectController.add($event)">
+                </bo-booking-add-day>
+            </td>
+        </tr>
+    </tbody>
+</table>
