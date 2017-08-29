@@ -1,7 +1,9 @@
+@import '../../../../../bokain-models/lib/src/styles/grid/colors';
+
 .healing
 {
   cursor: pointer;
-  color: palevioletred;
+  color: $colorAlert;
 }
 
 material-spinner

@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Salon, Service, ServiceAddon, User;
@@ -13,7 +13,7 @@ import 'package:bokain_calendar/src/components/week_base/week_base.dart';
     selector: 'bo-booking-add-week',
     styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'booking_add_week_component.css'],
     templateUrl: 'booking_add_week_component.html',
-    directives: const [materialDirectives, BookingAddDayComponent],
+    directives: const [BookingAddDayComponent, CORE_DIRECTIVES, materialDirectives],
     pipes: const [DatePipe, PhrasePipe],
     changeDetection: ChangeDetectionStrategy.Default
 )

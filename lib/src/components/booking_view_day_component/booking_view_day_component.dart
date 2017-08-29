@@ -3,7 +3,7 @@
 
 import 'dart:async' show Stream, StreamController;
 
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -15,9 +15,9 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     selector: 'bo-booking-view-day',
     styleUrls: const ['../calendar_component.css', 'booking_view_day_component.css'],
     templateUrl: 'booking_view_day_component.html',
-    directives: const [materialDirectives, IncrementGroupComponent, TimesComponent],
+    directives: const [CORE_DIRECTIVES, IncrementGroupComponent, materialDirectives, TimesComponent],
     providers: const [CalendarService],
-    pipes: const [PhrasePipe],
+    pipes: const [DatePipe, PhrasePipe],
     changeDetection: ChangeDetectionStrategy.Default
 )
 class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit

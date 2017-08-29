@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/src/pipes/week_pipe.dart';
@@ -11,7 +11,7 @@ import 'package:bokain_calendar/src/pipes/week_pipe.dart';
     selector: 'bo-week-stepper',
     styleUrls: const ['week_stepper_component.css'],
     templateUrl: 'week_stepper_component.html',
-    directives: const [materialDirectives],
+    directives: const [CORE_DIRECTIVES, materialDirectives],
     pipes: const [PhrasePipe, WeekPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )

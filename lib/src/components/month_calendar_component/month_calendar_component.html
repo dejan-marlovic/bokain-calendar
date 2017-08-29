@@ -1,8 +1,8 @@
 <div class="row" id="month-stepper">
     <div class="s12 col text-center">
-        <material-fab mini (trigger)="advance(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+        <material-fab mini (trigger)="advance(-1)"><material-icon icon="chevron_left"></material-icon></material-fab>
         <span>{{date | date:'MMMM' | phrase}} {{date.year}}</span>
-        <material-fab mini (trigger)="advance(1)"><glyph icon="chevron_right"></glyph></material-fab>
+        <material-fab mini (trigger)="advance(1)"><material-icon icon="chevron_right"></material-icon></material-fab>
     </div>
 </div>
 <div class="row margin-top-small">

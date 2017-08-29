@@ -3,12 +3,12 @@
     <!-- DAY -->
     <material-tab label="{{'day' | phrase}}">
         <div class="row">
-            <div class="columns">
+            <div class="col">
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
             </div>
         </div>
         <div class="row" *ngIf="activeTabIndex == 0">
-            <div class="columns">
+            <div class="col">
                 <bo-schedule-day
                         *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"
@@ -30,12 +30,12 @@
     <!-- WEEK -->
     <material-tab label="{{'week' | phrase}}">
         <div class="row">
-            <div class="columns">
+            <div class="col">
                 <bo-week-stepper [(date)]="date"></bo-week-stepper>
             </div>
         </div>
         <div class="row" *ngIf="activeTabIndex == 1">
-            <div class="columns">
+            <div class="col">
                 <bo-schedule-week
                         *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"

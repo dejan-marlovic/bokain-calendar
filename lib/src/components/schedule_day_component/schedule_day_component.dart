@@ -3,7 +3,7 @@
 
 import 'dart:async' show Future, Stream;
 import 'dart:html' as dom;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:fo_components/fo_components.dart';
@@ -14,9 +14,9 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     selector: 'bo-schedule-day',
     styleUrls: const ['../calendar_component.css', 'schedule_day_component.css'],
     templateUrl: 'schedule_day_component.html',
-    directives: const [materialDirectives, FoModalComponent, IncrementComponent],
+    directives: const [CORE_DIRECTIVES, FoModalComponent, IncrementComponent, materialDirectives],
     providers: const [CalendarService],
-    pipes: const [PhrasePipe],
+    pipes: const [DatePipe, PhrasePipe],
     changeDetection: ChangeDetectionStrategy.Default
 )
 class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit

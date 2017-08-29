@@ -45,14 +45,14 @@
                 [disabled]="booking.invoiceSent"
                 class="red"
                 (trigger)="toggleNoshow()">
-            {{'no-show' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.noshow" size="medium"></glyph>
+            {{'no-show' | phrase}}&nbsp;<material-icon icon="check" *ngIf="booking.noshow" size="medium"></material-icon>
         </material-button>
         <material-button
                 raised
                 [disabled]="booking.invoiceSent"
                 *ngIf="booking.noshow"
                 (trigger)="generateInvoice()">
-            {{'send_invoice' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.invoiceSent" size="medium"></glyph>
+            {{'send_invoice' | phrase}}&nbsp;<material-icon icon="check" *ngIf="booking.invoiceSent" size="medium"></material-icon>
         </material-button>
     </p>
 

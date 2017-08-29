@@ -1,4 +1,4 @@
-@import '../../../../../bokain-models/css/theme';
+@import '../../../../../bokain-models/lib/src/styles/grid/colors';
 
 div.increment
 {
@@ -12,11 +12,11 @@ div.increment
 }
 div.increment:hover
 {
-  background-color: $color-2;
+  background-color: $color2;
 }
 div.increment.open
 {
-  background-color: $color-1;
+  background-color: $color1;
   color: white;
 }
 div.increment.break
@@ -25,7 +25,7 @@ div.increment.break
 }
 div.increment.sick
 {
-  background-color: palevioletred;
+  background-color: $colorAlert;
   color: white;
 }
 div.increment.booked

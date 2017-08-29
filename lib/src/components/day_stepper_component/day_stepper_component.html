@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="columns text-center">
-        <material-fab mini (trigger)="advance(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+    <div class="col text-center">
+        <material-fab mini (trigger)="advance(-1)"><material-icon icon="chevron_left"></material-icon></material-fab>
         <material-dropdown-select
                 [buttonText]="date | date:'yyyy-MM-dd'"
                 [popupMatchInputWidth]="true">
@@ -12,6 +12,6 @@
                 {{d | date:'yyyy-MM-dd'}}
             </material-select-item>
         </material-dropdown-select>
-        <material-fab mini (trigger)="advance(1)"><glyph icon="chevron_right"></glyph></material-fab>
+        <material-fab mini (trigger)="advance(1)"><material-icon icon="chevron_right"></material-icon></material-fab>
     </div>
 </div>

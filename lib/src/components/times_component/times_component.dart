@@ -2,13 +2,15 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:bokain_models/bokain_models.dart' show Day;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 
 @Component(
     selector: 'bo-times',
     styleUrls: const ['../calendar_component.css', 'times_component.css'],
     templateUrl: 'times_component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    directives: const [CORE_DIRECTIVES],
+    pipes : const [DatePipe]
 )
 class TimesComponent
 {

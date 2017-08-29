@@ -3,13 +3,13 @@
         <h3 class="margin-none" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="margin-none">
             {{date | date:'dd'}}
-            <glyph
+            <material-icon
                     *ngIf="day.isPopulated(selectedSalon?.id, selectedUser?.id)"
                     icon="healing"
                     class="healing"
                     size="large"
                     (click)="alertVisible = true">
-            </glyph>
+            </material-icon>
         </h1>
         <h3 class="margin-none-top month">{{date | date:'MMMM' | phrase}}</h3>
         <material-spinner *ngIf="calendarService.loading"></material-spinner>

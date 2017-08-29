@@ -8,14 +8,11 @@ environment:
   sdk: '>=1.24.2 <2.0.0'
 
 dependencies:
-  angular2: "^3.1.0"
-  angular_components: "^0.5.2"
+  angular: "^4.0.0-beta"
+  angular_components: "^0.6.0-beta"
+  angular_router: "^1.0.1"
   bokain_models:
     path: ../bokain-models/
 
 transformers:
-- angular2:
-    platform_directives:
-    - 'package:angular2/common.dart#COMMON_DIRECTIVES'
-    platform_pipes:
-    - 'package:angular2/common.dart#COMMON_PIPES'
+- angular

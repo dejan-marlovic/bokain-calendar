@@ -1,4 +1,4 @@
-@import '../../../../../bokain-models/css/theme';
+@import '../../../../../bokain-models/lib/src/styles/grid/colors';
 
 div
 {
@@ -9,22 +9,22 @@ div
 
 div.clickable
 {
-  color: $color-1;
+  color: $color1;
 }
 
 div.clickable.isMargin
 {
-  color: $color-2-dark;
+  color: $color2Dark;
 }
 
 div.clickable:hover
 {
   color: white;
-  background-color: $color-1;
+  background-color: $color1;
 }
 
 div.closed
 {
-  color: $color-2;
+  color: $color2;
 }
 

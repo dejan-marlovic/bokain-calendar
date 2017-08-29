@@ -1,6 +1,6 @@
 <div class="row">
     <div class="s12 col text-center">
-        <material-fab mini (trigger)="advanceWeek(-1)"><glyph icon="chevron_left"></glyph></material-fab>
+        <material-fab mini (trigger)="advanceWeek(-1)"><material-icon icon="chevron_left"></material-icon></material-fab>
         <material-dropdown-select
                 buttonText="{{'week' | phrase}}&nbsp;{{date | week}}"
                 [popupMatchInputWidth]="false">
@@ -12,6 +12,6 @@
                 {{'week' | phrase}} {{d | week}}
             </material-select-item>
         </material-dropdown-select>
-        <material-fab mini (trigger)="advanceWeek(1)"><glyph icon="chevron_right"></glyph></material-fab>
+        <material-fab mini (trigger)="advanceWeek(1)"><material-icon icon="chevron_right"></material-icon></material-fab>
     </div>
 </div>

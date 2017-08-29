@@ -2,8 +2,8 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
+import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -12,9 +12,9 @@ import 'package:bokain_models/bokain_models.dart';
     selector: 'bo-booking-details',
     styleUrls: const ['booking_details_component.css'],
     templateUrl: 'booking_details_component.html',
-    directives: const [materialDirectives, FoModalComponent],
+    directives: const [CORE_DIRECTIVES, FoModalComponent, materialDirectives],
     providers: const [BillogramService],
-    pipes: const [PhrasePipe]
+    pipes: const [DatePipe, PhrasePipe]
 )
 class BookingDetailsComponent implements OnDestroy, OnChanges
 {

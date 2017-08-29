@@ -1,5 +1,5 @@
 import 'dart:async' show StreamController, StreamSubscription;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, SalonService, UserService, Day, Salon, User;
 
 abstract class DayBase

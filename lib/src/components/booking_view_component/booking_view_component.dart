@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, BookingService, CalendarService, Salon, User;
 import 'package:fo_components/fo_components.dart';
@@ -21,12 +21,13 @@ import 'package:bokain_calendar/src/components/week_stepper_component/week_stepp
     templateUrl: 'booking_view_component.html',
     directives: const
     [
-      materialDirectives,
       BookingDetailsComponent,
       BookingViewDayComponent,
       BookingViewWeekComponent,
+      CORE_DIRECTIVES,
       DayStepperComponent,
       FoModalComponent,
+      materialDirectives,
       MonthCalendarComponent,
       ScheduleDayComponent,
       ScheduleWeekComponent,

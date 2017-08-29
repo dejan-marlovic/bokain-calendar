@@ -3,8 +3,8 @@
 
 import 'dart:async';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:angular2/angular2.dart';
-import 'package:angular_components/angular_components.dart' show GlyphComponent;
+import 'package:angular/angular.dart';
+import 'package:angular_components/angular_components.dart' show MaterialIconComponent;
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_calendar/src/components/increment_component/increment_component.dart';
@@ -13,7 +13,7 @@ import 'package:bokain_calendar/src/components/increment_component/increment_com
     selector: 'bo-increment-group',
     styleUrls: const ['../calendar_component.css', 'increment_group_component.css'],
     templateUrl: 'increment_group_component.html',
-    directives: const [GlyphComponent, IncrementComponent]
+    directives: const [CORE_DIRECTIVES, IncrementComponent, MaterialIconComponent]
 )
 class IncrementGroupComponent implements OnChanges, OnDestroy
 {

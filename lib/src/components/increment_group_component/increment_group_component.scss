@@ -1,3 +1,5 @@
+@import '../../../../../bokain-models/lib/src/styles/grid/colors';
+
 div.container
 {
   cursor: pointer;
@@ -20,7 +22,7 @@ div.container
 
 div.container.noshow
 {
-  border-left: 4px solid red;
-  border-right: 4px solid red;
+  border-left: 4px solid $colorAlert;
+  border-right: 4px solid $colorAlert;
 }
 

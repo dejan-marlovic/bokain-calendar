@@ -1,4 +1,4 @@
-@import '../../../../../bokain-models/css/theme';
+@import '../../../../../bokain-models/lib/src/styles/grid/colors';
 
 div.increment
 {
@@ -12,5 +12,5 @@ div.increment.dark
 
 div.increment.beforeNow
 {
-  color: $color-1;
+  color: $color1;
 }
