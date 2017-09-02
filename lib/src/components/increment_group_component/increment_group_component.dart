@@ -27,11 +27,11 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
     Increment i = increments.first;
     UserState us = i.userStates.containsKey(userId) ? i.userStates[userId] : null;
 
-    booking = (us == null) ? null : bookingService.getModel(us.bookingId);
+    booking = (us == null) ? null : bookingService.get(us.bookingId);
     calendarState = us?.state;
 
-    customer = (booking == null) ? null : customerService.getModel(booking.customerId);
-    service = (booking == null) ? null : serviceService.getModel(booking.serviceId);
+    customer = (booking == null) ? null : customerService.get(booking.customerId);
+    service = (booking == null) ? null : serviceService.get(booking.serviceId);
   }
 
   void ngOnDestroy()

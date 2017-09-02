@@ -11,7 +11,7 @@ import 'package:bokain_calendar/src/pipes/week_pipe.dart';
     selector: 'bo-week-stepper',
     styleUrls: const ['week_stepper_component.css'],
     templateUrl: 'week_stepper_component.html',
-    directives: const [CORE_DIRECTIVES, materialDirectives],
+    directives: const [CORE_DIRECTIVES, materialDirectives, MaterialIconComponent],
     pipes: const [PhrasePipe, WeekPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )

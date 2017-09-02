@@ -112,13 +112,13 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
     /// Cancel all covered bookings
     for (String booking_id in bookingIds)
     {
-      Booking booking = super.bookingService.getModel(booking_id);
+      Booking booking = super.bookingService.get(booking_id);
 
       // Generate email
-      Customer customer = _customerService.getModel(booking.customerId);
-      Service service = _serviceService.getModel(booking.serviceId);
-      User user = userService.getModel(booking.userId);
-      Salon salon = salonService.getModel(booking.salonId);
+      Customer customer = _customerService.get(booking.customerId);
+      Service service = _serviceService.get(booking.serviceId);
+      User user = userService.get(booking.userId);
+      Salon salon = salonService.get(booking.salonId);
 
       Map<String, String> params = new Map();
       params["service_name"] = service.name;

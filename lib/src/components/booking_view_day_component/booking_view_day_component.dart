@@ -47,7 +47,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, A
         UserState us = increment.userStates[selectedUser.id];
         if (us.bookingId != null)
         {
-          onBookingSelectController.add(bookingService.getModel(increment.userStates[selectedUser.id].bookingId));
+          onBookingSelectController.add(bookingService.get(increment.userStates[selectedUser.id].bookingId));
         }
       }
     }

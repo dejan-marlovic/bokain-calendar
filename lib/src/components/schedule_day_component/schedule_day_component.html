@@ -1,7 +1,7 @@
 <div *ngIf="day != null" (mouseup)="applyHighlightedChanges()">
     <div class="text-center day-header">
-        <h3 class="margin-none" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
-        <h1 class="margin-none">
+        <h3 class="margin-top-none margin-bottom-none" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
+        <h1 class="margin-top-none margin-bottom-none">
             {{date | date:'dd'}}
             <material-icon
                     *ngIf="day.isPopulated(selectedSalon?.id, selectedUser?.id)"
@@ -11,7 +11,7 @@
                     (click)="alertVisible = true">
             </material-icon>
         </h1>
-        <h3 class="margin-none-top month">{{date | date:'MMMM' | phrase}}</h3>
+        <h3 class="margin-top-none month">{{date | date:'MMMM' | phrase}}</h3>
         <material-spinner *ngIf="calendarService.loading"></material-spinner>
     </div>
     <div [class.disabled]="calendarService.loading">

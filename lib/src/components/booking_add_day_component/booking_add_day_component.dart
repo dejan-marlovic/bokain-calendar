@@ -73,7 +73,7 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, Af
        * Filter so that higher ranked users always gets bookings if available. Then select a random user out of the qualified ones
        * of the highest rank (if a user has been selected by the customer, there will only be one user in the list)
        */
-      List<User> qualifiedUsers = userService.getModelsAsList(qualifiedUserIds.toList(growable: false));
+      List<User> qualifiedUsers = userService.getMany(qualifiedUserIds.toList(growable: false)).values.toList();
       qualifiedUsers.sort((user1, user2) => (user2.bookingRank - user1.bookingRank).toInt());
       qualifiedUsers.removeWhere((u) => u.bookingRank < qualifiedUsers.first.bookingRank);
 

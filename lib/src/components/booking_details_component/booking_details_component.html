@@ -1,5 +1,5 @@
 <div *ngIf="booking != null">
-    <h2 class="margin-none">{{service?.name}}</h2>
+    <h2 class="margin-top-none margin-bottom-none">{{service?.name}}</h2>
     <h4 *ngIf="addons.isNotEmpty" class="margin-top-none">{{addons.join(', ')}}</h4>
     <table>
         <tr>
@@ -61,8 +61,8 @@
             [(visible)]="confirmModalOpen">
         <p>{{'confirm_cancel_booking' | phrase}}</p>
         <div class="text-right">
-            <material-button [disabled]="bookingService.loading" raised (trigger)="cancel()">{{'true' | phrase}}</material-button>
-            <material-button [disabled]="bookingService.loading" raised (trigger)="confirmModalOpen = false">{{'false' | phrase}}</material-button>
+            <material-button [disabled]="bookingService.loading" raised (trigger)="cancel()">{{'ok' | phrase}}</material-button>
+            <material-button [disabled]="bookingService.loading" raised (trigger)="confirmModalOpen = false">{{'cancel' | phrase}}</material-button>
         </div>
     </fo-modal>
 </div>

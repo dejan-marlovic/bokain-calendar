@@ -38,7 +38,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
     if (service != null && booking != null)
     {
       _totalPrice = service.price;
-      if (booking.serviceAddonIds != null) _addons = serviceAddonService.getModelsAsList(booking.serviceAddonIds);
+      if (booking.serviceAddonIds != null) _addons = serviceAddonService.getMany(booking.serviceAddonIds).values.toList(growable: false);
       for (ServiceAddon addon in _addons)
       {
         _totalPrice += addon.price;
@@ -104,11 +104,11 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
 
   num get totalPrice => _totalPrice;
 
-  Customer get customer => customerService.getModel(booking?.customerId);
+  Customer get customer => customerService.get(booking?.customerId);
   Room get room => salonService.getRoom(booking?.roomId);
-  Salon get salon => salonService.getModel(booking?.salonId);
-  Service get service => serviceService.getModel(booking?.serviceId);
-  User get user => userService.getModel(booking?.userId);
+  Salon get salon => salonService.get(booking?.salonId);
+  Service get service => serviceService.get(booking?.serviceId);
+  User get user => userService.get(booking?.userId);
   List<ServiceAddon> get addons => _addons;
 
   List<ServiceAddon> _addons = new List();
