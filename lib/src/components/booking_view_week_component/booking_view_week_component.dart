@@ -23,8 +23,7 @@ import 'package:bokain_calendar/src/components/week_base/week_base.dart';
       TimesComponent,
       IncrementComponent,
     ],
-    pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.Default
+    pipes: const [PhrasePipe]
 )
 class BookingViewWeekComponent extends WeekBase implements OnDestroy
 {
@@ -36,22 +35,6 @@ class BookingViewWeekComponent extends WeekBase implements OnDestroy
     super.ngOnDestroy();
     onBookingSelectController.close();
   }
-
-  @Input('date')
-  @override
-  void set date(DateTime value)
-  {
-    super.date = value;
-  }
-
-  @Input('user')
-  void set user(User value) { selectedUser = value; }
-
-  @Input('salon')
-  void set salon(Salon value) { selectedSalon = value; }
-
-  @Output('dateClick')
-  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 
   @Output('bookingSelect')
   Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;

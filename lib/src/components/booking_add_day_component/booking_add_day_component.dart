@@ -16,28 +16,34 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     styleUrls: const ['../calendar_component.css', 'booking_add_day_component.css'],
     templateUrl: 'booking_add_day_component.html',
     directives: const [BookingTimeComponent, CORE_DIRECTIVES, IncrementComponent, materialDirectives],
-    providers: const [CalendarService],
-    pipes: const [DatePipe, PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.Default
+    providers: const [DayService],
+    pipes: const [DatePipe, PhrasePipe]
 )
-class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit
+class BookingAddDayComponent extends DayBase implements OnInit, OnChanges, OnDestroy
 {
-  BookingAddDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
+  BookingAddDayComponent(BookingService bs, DayService ds, SalonService ss, UserService us) : super(bs, ds, ss, us);
 
   @override ngOnChanges(Map<String, SimpleChange> changes)
   {
     super.ngOnChanges(changes);
-
-    totalDuration = (selectedService == null) ? const Duration(seconds: 1) : new Duration(minutes: selectedService.durationMinutes);
-    if (selectedServiceAddons != null)
+    if (changes.containsKey("salon") || changes.containsKey("service") || changes.containsKey("serviceAddons"))
     {
-      for (ServiceAddon addon in selectedServiceAddons)
+      totalDuration = (service == null) ? const Duration(seconds: 1) : new Duration(minutes: service.durationMinutes);
+      if (serviceAddons != null)
       {
-        totalDuration += addon.duration;
+        for (ServiceAddon addon in serviceAddons)
+        {
+          totalDuration += addon.duration;
+        }
+      }
+      if (service != null && salon != null)
+      {
+        /**
+         * Figure out which rooms are qualified for the selected salon and service
+         */
+        salonServiceRooms = salonService.getRooms(salon.roomIds).where((room) => room.serviceIds.contains(service.id) && room.status == "active").toList(growable: false);
       }
     }
-    salonServiceRooms = _getQualifiedRoomsOfSalonAndService(selectedSalon, selectedService).toList(growable: false);
-    qualifiedIncrements = [];
   }
 
   @override
@@ -47,20 +53,13 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, Af
     onTimeSelectController.close();
   }
 
-  @override
-  void updateDayRemote(Day d)
-  {
-    super.updateDayRemote(d);
-    qualifiedIncrements = _calcQualifiedIncrements().toList(growable: false);
-  }
-
-  bool isMargin(Increment increment) => (selectedUser == null) ? false : increment.userStates[selectedUser.id].state == "margin";
+  bool isMargin(Increment increment) => (user == null) ? false : increment.userStates[user.id].state == "margin";
 
   void makeBooking(Increment increment)
   {
-    if (!calendarService.loading)
+    if (!dayService.loading)
     {
-      Iterable<String> qualifiedUserIds = (selectedUser == null) ? _getQualifiedUserIdsForIncrement(increment) : [selectedUser.id];
+      Iterable<String> qualifiedUserIds = (user == null) ? _getQualifiedUserIdsForIncrement(increment) : [user.id];
       Iterable<String> rooms = _getQualifiedRoomIdsForIncrement(increment);
       if (qualifiedUserIds.isEmpty || rooms.isEmpty) return;
 
@@ -83,37 +82,46 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, Af
       booking.roomId = rooms.first;
 
       increment.userStates[booking.userId].state = "open";
-      calendarService.save(day);
+      dayService.set(day.id, day);
       onTimeSelectController.add(booking);
     }
   }
 
-  Iterable<Increment> _calcQualifiedIncrements()
+  Iterable<Increment> get qualifiedIncrements
   {
-    if (day == null || day.increments.isEmpty || selectedSalon == null) return [];
-    try
-    {
-      return day.increments.where(_available);
-    }
-    on StateError catch(e)
-    {
-      print(e);
-      return [];
-    }
+    if (day == null || salon == null || service == null) return [];
+    return day.increments.where(_available);
   }
 
   bool _available(Increment increment)
   {
-    if (selectedService == null) return false;
     DateTime startTime = increment.startTime;
-    DateTime endTime = increment.startTime.add(totalDuration + selectedService.afterMargin);
+    DateTime endTime = increment.startTime.add(totalDuration + service.afterMargin);
 
     /// Broad phase check
-    if (startTime.isBefore(new DateTime.now()) || endTime.isAfter(day.endTime.add(selectedService.afterMargin))) return false;
+    if (startTime.isBefore(new DateTime.now()))
+    {
+      //print("This time is in the past: $startTime");
+      return false;
+    }
+    if (endTime.isAfter(day.endTime.add(service.afterMargin)))
+    {
+      //print("No time left today: $endTime");
+      return false;
+    }
 
-    Iterable<String> userIds = (selectedUser == null) ? _getQualifiedUserIdsForIncrement(increment) : [selectedUser.id];
+    Iterable<String> userIds = (user == null) ? _getQualifiedUserIdsForIncrement(increment) : [user.id];
     Iterable<String> roomIds = _getQualifiedRoomIdsForIncrement(increment);
-    if (userIds.isEmpty || roomIds.isEmpty) return false;
+    if (userIds.isEmpty)
+    {
+      //print("No users are qualified for increment $startTime");
+      return false;
+    }
+    if (roomIds.isEmpty)
+    {
+      //print("No rooms are qualified for increment $startTime");
+      return false;
+    }
 
     DateTime previousEndTime;
 
@@ -129,74 +137,63 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, Af
       {
         userIds = _getQualifiedUserIdsForIncrement(i).where(userIds.contains);
         roomIds = _getQualifiedRoomIdsForIncrement(i).where(roomIds.contains);
-        if (userIds.isEmpty || roomIds.isEmpty) return false;                   /// No users left or no rooms left
+
+        if (userIds.isEmpty)
+        {
+          //print("No users left for increment $startTime");
+          return false;
+        }
+        else if (roomIds.isEmpty)
+        {
+          //print("No rooms left for increment $startTime");
+          return false;
+        }
       }
       previousEndTime = i.endTime;
     }
-    return true;
-  }
 
-  Iterable<Room> _getQualifiedRoomsOfSalonAndService(Salon salon, Service service)
-  {
-    if (salon == null || service == null) return [];
-    return salonService.getRooms(salon.roomIds).where((room) => room.serviceIds.contains(service.id) && room.status == "active");
+    //print("Available increment found: $startTime");
+    return true;
   }
 
   Iterable<String> _getQualifiedRoomIdsForIncrement(Increment increment)
   {
-    if (selectedService == null) return [];
-
-    Iterable<Room> qualifiedRooms = salonServiceRooms.where((room) => bookingService.find(increment.startTime, room.id) == null);
+    Iterable<Room> qualifiedRooms = salonServiceRooms.where((room) => bookingService.findCached(increment.startTime, room.id) == null);
     return qualifiedRooms.map((r) => r.id);
   }
 
   Iterable<String> _getQualifiedUserIdsForIncrement(Increment increment)
   {
-    if (selectedService == null) return [];
-
     /// No user selected, return all qualified
-    if (selectedUser == null)
+    if (user == null)
     {
       return increment.userStates.keys.where((id) =>
-          selectedService.userIds.contains(id) &&
+          service.userIds.contains(id) &&
           (increment.userStates[id].bookingId == null && increment.userStates[id].state == "open") ||
           (includeMargins && increment.userStates[id].state == "margin"));
     }
     else
     {
-      if (!increment.userStates.containsKey(selectedUser.id)) return [];
-      UserState us = increment.userStates[selectedUser.id];
-      return ((us.bookingId == null && us.state == "open") || (includeMargins && us.state == "margin")) ? [selectedUser.id] : [];
+      if (!increment.userStates.containsKey(user.id)) return [];
+      UserState us = increment.userStates[user.id];
+      return ((us.bookingId == null && us.state == "open") || (includeMargins && us.state == "margin")) ? [user.id] : [];
     }
   }
 
   String selectedRoomId;
   final StreamController<Booking> onTimeSelectController = new StreamController();
-  List<Increment> qualifiedIncrements = new List();
+  //List<Increment> qualifiedIncrements = new List();
   Duration totalDuration = new Duration(seconds: 1);
   List<Room> salonServiceRooms = [];
 
-  @Input('date')
-  @override
-  void set date(DateTime value) { super.date = value; }
-  
-  @Input('salon')
-  void set salon(Salon value) { super.selectedSalon = value; }
-
   @Input('service')
-  Service selectedService;
+  Service service;
 
   @Input('serviceAddons')
-  List<ServiceAddon> selectedServiceAddons;
-
-  @Input('user')
-  void set user(User value) { super.selectedUser = value; }
+  List<ServiceAddon> serviceAddons;
 
   @Input('includeMargins')
   bool includeMargins = true;
-
-  @Output('dateClick')
-  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 
   @Output('timeSelect')
   Stream<Booking> get onTimeSelect => onTimeSelectController.stream;

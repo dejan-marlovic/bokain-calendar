@@ -4,7 +4,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, BookingService, CalendarService, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, BookingService, Salon, User;
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/src/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_calendar/src/components/booking_view_day_component/booking_view_day_component.dart';
@@ -38,7 +38,7 @@ import 'package:bokain_calendar/src/components/week_stepper_component/week_stepp
 )
 class BookingViewComponent implements OnDestroy
 {
-  BookingViewComponent(this.bookingService, this.calendarService);
+  BookingViewComponent(this.bookingService);
 
   void ngOnDestroy()
   {
@@ -79,7 +79,6 @@ class BookingViewComponent implements OnDestroy
   Booking selectedBooking;
   int _activeTabIndex = 0;
   final BookingService bookingService;
-  final CalendarService calendarService;
   final StreamController<int> _onActiveTabIndexChangeController = new StreamController();
   final StreamController<Booking> _onRebookController = new StreamController();
   final StreamController<DateTime> _onDateChangeController = new StreamController();

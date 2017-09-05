@@ -32,7 +32,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    _addons.clear();
+    _addons = new List();
     _totalPrice = 0;
 
     if (service != null && booking != null)

@@ -4,8 +4,8 @@
         <td *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
             <bo-schedule-day
                     [selectedState]="selectedState"
-                    [user]="selectedUser"
-                    [salon]="selectedSalon"
+                    [user]="user"
+                    [salon]="salon"
                     [date]="weekDates[i]"
                     (bookingSelect)="onBookingSelectController.add($event)"
                     (dateClick)="onDateClickController.add($event)">

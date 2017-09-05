@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream;
+import 'dart:async' show Future;
 import 'dart:html' as dom;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
@@ -15,64 +15,63 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     styleUrls: const ['../calendar_component.css', 'schedule_day_component.css'],
     templateUrl: 'schedule_day_component.html',
     directives: const [CORE_DIRECTIVES, FoModalComponent, IncrementComponent, materialDirectives],
-    providers: const [CalendarService],
-    pipes: const [DatePipe, PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.Default
+    providers: const [DayService],
+    pipes: const [DatePipe, PhrasePipe]
 )
-class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit
+class ScheduleDayComponent extends DayBase implements OnInit, OnChanges, OnDestroy
 {
-  ScheduleDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us, this._customerService, this._mailService, this._phraseService, this._serviceService) : super(bs, cs, ss, us);
+  ScheduleDayComponent(BookingService bs, DayService ds, SalonService ss, UserService us, this._customerService, this._mailService, this._phraseService, this._serviceService) : super(bs, ds, ss, us);
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!calendarService.loading && (selectedUser != null || selectedSalon != null))
+    if (!dayService.loading && (user != null || salon != null))
     {
-      if (!increment.userStates.containsKey(selectedUser.id))
+      if (!increment.userStates.containsKey(user.id))
       {
-        increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+        increment.userStates[user.id] = new UserState(user.id);
       }
-      UserState us = increment.userStates[selectedUser.id];
+      UserState us = increment.userStates[user.id];
       if (us.bookingId == null) firstHighlighted = lastHighlighted = increment;
     }
   }
 
   void onIncrementMouseEnter(dom.MouseEvent e, Increment increment)
   {
-    if (!calendarService.loading && selectedUser != null && selectedSalon != null && e.buttons == 1)
+    if (!dayService.loading && user != null && salon != null && e.buttons == 1)
     {
       /// User is dragging the mouse and the increment is not booked for the
       /// selected user, highlight the increment
-      if (!increment.userStates.containsKey(selectedUser.id))
+      if (!increment.userStates.containsKey(user.id))
       {
-        increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+        increment.userStates[user.id] = new UserState(user.id);
       }
-      if (increment.userStates[selectedUser.id].bookingId == null) lastHighlighted = increment;
+      if (increment.userStates[user.id].bookingId == null) lastHighlighted = increment;
       else firstHighlighted = lastHighlighted = null;
     }
   }
 
   Future applyHighlightedChanges() async
   {
-    if (!calendarService.loading && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
+    if (!dayService.loading && firstHighlighted != null && lastHighlighted != null && user != null && salon != null)
     {
-      bool add = firstHighlighted.userStates[selectedUser.id].state == null;
+      bool add = firstHighlighted.userStates[user.id].state == null;
 
       day.increments.where(isHighlighted).forEach((inc)
       {
         /**
          * Make sure a [UserState] is there (if none exists, create it)
          */
-        if (!inc.userStates.containsKey(selectedUser.id)) inc.userStates[selectedUser.id] = new UserState(selectedUser.id);
-        UserState us = inc.userStates[selectedUser.id];
+        if (!inc.userStates.containsKey(user.id)) inc.userStates[user.id] = new UserState(user.id);
+        UserState us = inc.userStates[user.id];
 
         us.state = (add) ? selectedState : null;
 
         /**
          * If Userstate.state is set to null, remove it altogether
          */
-        if (us.state == null) inc.userStates.remove(selectedUser.id);
+        if (us.state == null) inc.userStates.remove(user.id);
       });
-      calendarService.save(day).then((_) => firstHighlighted = lastHighlighted = null);
+      dayService.set(day.id, day).then((_) => firstHighlighted = lastHighlighted = null);
     }
   }
 
@@ -94,18 +93,18 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   Future setAllDaySick() async
   {
-    if (calendarService.loading || selectedUser == null || day == null) return;
+    if (dayService.loading || user == null || day == null) return;
 
     Set<String> bookingIds = new Set();
 
     /// Get open increments, and update them to state: sick. Store any booking ids for further processing
-    for (Increment increment in day.increments.where((i) => i.userStates.containsKey(selectedUser.id)))
+    for (Increment increment in day.increments.where((i) => i.userStates.containsKey(user.id)))
     {
-      increment.userStates[selectedUser.id].state = "sick";
-      if (increment.userStates[selectedUser.id].bookingId != null)
+      increment.userStates[user.id].state = "sick";
+      if (increment.userStates[user.id].bookingId != null)
       {
-        bookingIds.add(increment.userStates[selectedUser.id].bookingId);
-        increment.userStates[selectedUser.id].bookingId = null;
+        bookingIds.add(increment.userStates[user.id].bookingId);
+        increment.userStates[user.id].bookingId = null;
       }
     }
 
@@ -134,7 +133,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
       await bookingService.remove(booking_id);
     }
 
-    await calendarService.save(day);
+    await dayService.set(day.id, day);
     alertVisible = false;
   }
 
@@ -147,18 +146,6 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   @Input('selectedState')
   String selectedState = "open";
-
-  @Input('user')
-  void set user(User value) { selectedUser = value; }
-
-  @Input('salon')
-  void set salon(Salon value) { selectedSalon = value; }
-
-  @Input('date')
-  void set date(DateTime value) { super.date = value; }
-
-  @Output('dateClick')
-  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 }
 
 

@@ -15,23 +15,30 @@ import 'package:bokain_calendar/src/components/increment_component/increment_com
     templateUrl: 'increment_group_component.html',
     directives: const [CORE_DIRECTIVES, IncrementComponent, MaterialIconComponent]
 )
-class IncrementGroupComponent implements OnChanges, OnDestroy
+class IncrementGroupComponent implements OnInit, OnDestroy
 {
   IncrementGroupComponent(this.bookingService, this.serviceService, this.customerService, this._phraseService)
   {
     timer = new Timer.periodic(const Duration(minutes:1), (t) => now = new DateTime.now());
   }
 
-  void ngOnChanges(Map<String, SimpleChange> changes)
+  Future ngOnInit() async
   {
+    if (increments.isEmpty) return;
     Increment i = increments.first;
     UserState us = i.userStates.containsKey(userId) ? i.userStates[userId] : null;
 
-    booking = (us == null) ? null : bookingService.get(us.bookingId);
-    calendarState = us?.state;
-
-    customer = (booking == null) ? null : customerService.get(booking.customerId);
-    service = (booking == null) ? null : serviceService.get(booking.serviceId);
+    if (us != null)
+    {
+      booking = await bookingService.fetch(us.bookingId);
+      if (booking != null)
+      {
+        print(booking);
+        customer = await customerService.fetch(booking.customerId);
+        service = await serviceService.fetch(booking.serviceId);
+      }
+      calendarState = us.state;
+    }
   }
 
   void ngOnDestroy()
@@ -39,8 +46,6 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
     onBookingClickController.close();
     timer.cancel();
   }
-
-  String get bookingId => (userId == null || increments.isEmpty || !increments.first.userStates.containsKey(userId)) ? null : increments.first.userStates[userId].bookingId;
 
   String outputRow(int i)
   {
@@ -99,7 +104,7 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
   final ServiceService serviceService;
   final CustomerService customerService;
   final PhraseService _phraseService;
-  final StreamController<String> onBookingClickController = new StreamController();
+  final StreamController<Booking> onBookingClickController = new StreamController();
   Timer timer;
 
   Booking booking;
@@ -114,7 +119,7 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
   String userId;
 
   @Output('click')
-  Stream<String> get onBookingClickOutput => onBookingClickController.stream;
+  Stream<Booking> get onBookingClickOutput => onBookingClickController.stream;
 
   DateFormat hm = new DateFormat.Hm();
   DateTime now = new DateTime.now();

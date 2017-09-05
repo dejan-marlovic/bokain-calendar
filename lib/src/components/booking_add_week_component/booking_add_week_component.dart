@@ -5,7 +5,7 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Salon, Service, ServiceAddon, User;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_calendar/src/components/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_calendar/src/components/week_base/week_base.dart';
 
@@ -27,12 +27,6 @@ class BookingAddWeekComponent extends WeekBase implements OnDestroy
     onTimeSelectController.close();
   }
 
-  @Input('user')
-  void set user(User value) { super.selectedUser = value; }
-
-  @Input('salon')
-  void set salon(Salon value) { super.selectedSalon = value; }
-
   @Input('service')
   Service service;
 
@@ -42,15 +36,8 @@ class BookingAddWeekComponent extends WeekBase implements OnDestroy
   @Input('totalDuration')
   Duration totalDuration = new Duration(seconds: 1);
 
-  @Input('date')
-  @override
-  void set date(DateTime value) { super.date = value; }
-
   @Input('includeMargins')
   bool includeMargins = true;
-
-  @Output('dateClick')
-  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 
   @Output('timeSelect')
   Stream<Booking> get onTimeSelectOutput => onTimeSelectController.stream;

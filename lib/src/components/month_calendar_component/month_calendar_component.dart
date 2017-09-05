@@ -14,18 +14,18 @@ import 'package:bokain_calendar/src/pipes/week_pipe.dart';
     styleUrls: const ['../calendar_component.css','month_calendar_component.css'],
     templateUrl: 'month_calendar_component.html',
     directives: const [BookingDetailsComponent, CORE_DIRECTIVES, materialDirectives],
-    providers: const [CalendarService],
+    providers: const [DayService],
     pipes: const [DatePipe, PhrasePipe, WeekPipe]
 )
-class MonthCalendarComponent implements AfterContentInit, OnDestroy
+class MonthCalendarComponent implements OnInit, OnDestroy
 {
-  MonthCalendarComponent(this.bookingService, this.calendarService, this._salonService)
+  MonthCalendarComponent(this.bookingService, this._dayService, this._salonService)
   {
-    onDayAddedListener = calendarService.onDayAdded.listen((day)
+    onDayAddedListener = _dayService.onChildAdded.listen((day)
     {
       for (int i = 0; i < 35; i++)
       {
-        if (monthDays[i].startTime.isAtSameMomentAs(day.startTime))
+        if (monthDays[i].startTime.isAtSameMomentAs((day as Day).startTime))
         {
           monthDays[i] = day;
           break;
@@ -34,7 +34,7 @@ class MonthCalendarComponent implements AfterContentInit, OnDestroy
     });
   }
 
-  void ngAfterContentInit()
+  void ngOnInit()
   {
     setDate(date);
   }
@@ -53,11 +53,18 @@ class MonthCalendarComponent implements AfterContentInit, OnDestroy
 
     while (firstDate.weekday > 1) firstDate = firstDate.add(const Duration(days: -1));
 
-    calendarService.setFilters(firstDate, firstDate.add(const Duration(days: 35)));
+    FirebaseQueryParams params = new FirebaseQueryParams(
+        limitTo: 300,
+        searchProperty: "start_time",
+        searchRangeStart: ModelBase.timestampFormat(firstDate),
+        searchRangeEnd: ModelBase.timestampFormat(firstDate.add(const Duration(days: 35)))
+    );
+
     for (int i = 0; i < 35; i++)
     {
       monthDays[i] = new Day(null, salon?.id, firstDate.add(new Duration(days: i)));
     }
+    _dayService.streamAll(params);
   }
 
   void advance(int month_count)
@@ -149,13 +156,13 @@ class MonthCalendarComponent implements AfterContentInit, OnDestroy
   Iterable<String> _getQualifiedRoomIdsForIncrement(Increment increment)
   {
     Iterable<Room> rooms = _salonService.getRooms(salon.roomIds).where((room) =>
-    room.serviceIds.contains(service.id) && room.status == "active" && bookingService.find(increment.startTime, room.id) == null);
+    room.serviceIds.contains(service.id) && room.status == "active" && bookingService.findCached(increment.startTime, room.id) == null);
     return rooms.map((r) => r.id);
   }
 
 
   final BookingService bookingService;
-  final CalendarService calendarService;
+  final DayService _dayService;
   final SalonService _salonService;
   DateTime firstDate;
   List<Day> monthDays = new List(35);

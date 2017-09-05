@@ -2,7 +2,7 @@
         [style.background-color]="backgroundColor"
         [style.color]="color"
         [class.noshow]="booking?.noshow == true"
-        (click)="onBookingClickController.add(bookingId)">
+        (click)="onBookingClickController.add(booking)">
     <div
             *ngFor="let increment of increments; let i = index"
             class="increment"

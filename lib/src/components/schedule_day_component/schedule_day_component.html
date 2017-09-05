@@ -1,10 +1,10 @@
-<div *ngIf="day != null" (mouseup)="applyHighlightedChanges()">
+<div (mouseup)="applyHighlightedChanges()">
     <div class="text-center day-header">
         <h3 class="margin-top-none margin-bottom-none" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="margin-top-none margin-bottom-none">
             {{date | date:'dd'}}
             <material-icon
-                    *ngIf="day.isPopulated(selectedSalon?.id, selectedUser?.id)"
+                    *ngIf="day != null && day.isPopulated(salon?.id, user?.id)"
                     icon="healing"
                     class="healing"
                     size="large"
@@ -12,13 +12,12 @@
             </material-icon>
         </h1>
         <h3 class="margin-top-none month">{{date | date:'MMMM' | phrase}}</h3>
-        <material-spinner *ngIf="calendarService.loading"></material-spinner>
     </div>
-    <div [class.disabled]="calendarService.loading">
+    <div *ngIf="user != null">
         <bo-increment
                 *ngFor="let increment of day.increments"
                 [increment]="increment"
-                [userId]="selectedUser?.id"
+                [userId]="user.id"
                 [highlight]="isHighlighted(increment)"
                 (mousedown)="onIncrementMouseDown(increment)"
                 (mouseenter)="onIncrementMouseEnter($event, increment)">

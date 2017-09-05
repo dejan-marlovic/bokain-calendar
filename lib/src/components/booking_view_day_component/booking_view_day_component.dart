@@ -1,8 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
-
+import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
@@ -16,13 +15,23 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     styleUrls: const ['../calendar_component.css', 'booking_view_day_component.css'],
     templateUrl: 'booking_view_day_component.html',
     directives: const [CORE_DIRECTIVES, IncrementGroupComponent, materialDirectives, TimesComponent],
-    providers: const [CalendarService],
     pipes: const [DatePipe, PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.Default
+    providers: const [DayService]
 )
-class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit
+class BookingViewDayComponent extends DayBase implements OnChanges, OnInit, OnDestroy
 {
-  BookingViewDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
+  BookingViewDayComponent(BookingService bs, DayService ds, SalonService ss, UserService us) : super(bs, ds, ss, us);
+
+  @override
+  void ngOnInit()
+  {
+    super.ngOnInit();
+    _dayAddedListener = dayService.onChildAdded.listen((_) => _groupIncrements());
+    _dayUpdatedListener = dayService.onChildUpdated.listen((_) => _groupIncrements());
+    _dayRemovedListener = dayService.onChildRemoved.listen((_) => _groupIncrements());
+
+    _groupIncrements();
+  }
 
   @override
   ngOnChanges(Map<String, SimpleChange> changes)
@@ -36,34 +45,28 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, A
   {
     super.ngOnDestroy();
     onBookingSelectController.close();
+
+    _dayAddedListener.cancel();
+    _dayUpdatedListener.cancel();
+    _dayRemovedListener.cancel();
   }
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!calendarService.loading && (selectedUser != null || selectedSalon != null))
+    if (!dayService.loading && (user != null || salon != null))
     {
-      if (increment.userStates.containsKey(selectedUser.id))
+      if (increment.userStates.containsKey(user.id))
       {
-        UserState us = increment.userStates[selectedUser.id];
-        if (us.bookingId != null)
-        {
-          onBookingSelectController.add(bookingService.get(increment.userStates[selectedUser.id].bookingId));
-        }
+        UserState us = increment.userStates[user.id];
+        if (us.bookingId != null) onBookingSelectController.add(bookingService.get(increment.userStates[user.id].bookingId));
       }
     }
-  }
-
-  @override
-  void updateDayRemote(Day d)
-  {
-    super.updateDayRemote(d);
-    _groupIncrements();
   }
 
   void _groupIncrements()
   {
     incrementGroups.clear();
-    if (day == null || selectedUser == null) return;
+    if (day == null || user == null) return;
 
     incrementGroups.add(new List()..add(day.increments.first));
 
@@ -72,9 +75,9 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, A
       Increment previous = day.increments[i-1];
       Increment current = day.increments[i];
 
-      UserState us = current.userStates.containsKey(selectedUser.id) ? current.userStates[selectedUser.id] : null;
+      UserState us = current.userStates.containsKey(user.id) ? current.userStates[user.id] : null;
 
-      if (us != null && us.state != null && (us.bookingId != null || us.state != 'open') && us == previous.userStates[selectedUser.id])
+      if (us != null && us.state != null && (us.bookingId != null || us.state != 'open') && us == previous.userStates[user.id])
       {
         incrementGroups.last.add(current);
       }
@@ -82,24 +85,16 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, A
     }
   }
 
+
+  StreamSubscription<Day> _dayAddedListener;
+  StreamSubscription<Day> _dayUpdatedListener;
+  StreamSubscription<String> _dayRemovedListener;
+
   final StreamController<Booking> onBookingSelectController = new StreamController();
   final List<List<Increment>> incrementGroups = new List();
 
-  @Input('user')
-  void set user(User value) { super.selectedUser = value; }
-
-  @Input('salon')
-  void set salon(Salon value) { super.selectedSalon = value; }
-
-  @Input('date')
-  @override
-  void set date(DateTime value) { super.date = value; }
-
   @Output('bookingSelect')
   Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;
-
-  @Output('dateClick')
-  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 }
 
 

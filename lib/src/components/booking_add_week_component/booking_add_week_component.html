@@ -3,8 +3,8 @@
         <tr>
             <td *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
                 <bo-booking-add-day
-                    [user]="selectedUser"
-                    [salon]="selectedSalon"
+                    [user]="user"
+                    [salon]="salon"
                     [service]="service"
                     [serviceAddons]="serviceAddons"
                     [date]="weekDates[i]"

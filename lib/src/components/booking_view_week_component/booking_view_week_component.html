@@ -1,4 +1,4 @@
-<table *ngIf="selectedUser != null">
+<table *ngIf="user != null">
     <tbody>
         <tr>
             <td>
@@ -6,8 +6,8 @@
             </td>
             <td *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
                 <bo-booking-view-day
-                        [user]="selectedUser"
-                        [salon]="selectedSalon"
+                        [user]="user"
+                        [salon]="salon"
                         [date]="weekDates[i]"
                         (bookingSelect)="onBookingSelectController.add($event)"
                         (dateClick)="onDateClickController.add($event)">

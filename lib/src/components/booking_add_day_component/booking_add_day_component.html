@@ -1,14 +1,13 @@
-<div *ngIf="day != null">
+<div>
     <div class="text-center day-header">
         <h3 class="weekday" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="day">{{date | date:'dd'}}</h1>
         <h3 class="month">{{date | date:'MMMM' | phrase}}</h3>
-        <material-spinner *ngIf="calendarService.loading"></material-spinner>
     </div>
 
-    <p class="text-center no-available-times hide-for-small" *ngIf="!calendarService.loading && qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
+    <p class="text-center no-available-times hide-for-small" *ngIf="!dayService.loading && qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
 
-    <div [class.disabled]="calendarService.loading">
+    <div *ngIf="!bookingService.loading">
         <bo-booking-time
                 *ngFor="let increment of qualifiedIncrements"
                 [increment]="increment"
