@@ -6,10 +6,10 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_calendar/src/components/booking_view_day_component/booking_view_day_component.dart';
-import 'package:bokain_calendar/src/components/increment_component/increment_component.dart';
-import 'package:bokain_calendar/src/components/times_component/times_component.dart';
-import 'package:bokain_calendar/src/components/week_base/week_base.dart';
+import '../../components/booking_view_day_component/booking_view_day_component.dart';
+import '../../components/increment_component/increment_component.dart';
+import '../../components/times_component/times_component.dart';
+import '../../components/week_base/week_base.dart';
 
 @Component(
     selector: 'bo-booking-view-week',

@@ -4,16 +4,11 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, BookingService, Salon, User;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_calendar/src/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_calendar/src/components/booking_view_day_component/booking_view_day_component.dart';
-import 'package:bokain_calendar/src/components/booking_view_week_component/booking_view_week_component.dart';
-import 'package:bokain_calendar/src/components/day_stepper_component/day_stepper_component.dart';
-import 'package:bokain_calendar/src/components/month_calendar_component/month_calendar_component.dart';
-import 'package:bokain_calendar/src/components/schedule_day_component/schedule_day_component.dart';
-import 'package:bokain_calendar/src/components/schedule_week_component/schedule_week_component.dart';
-import 'package:bokain_calendar/src/components/week_stepper_component/week_stepper_component.dart';
+import 'package:bokain_calendar/bokain_calendar.dart';
+import '../../components/booking_view_day_component/booking_view_day_component.dart';
+import '../../components/booking_view_week_component/booking_view_week_component.dart';
 
 @Component(
     selector: 'bo-booking-view',

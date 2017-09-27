@@ -5,7 +5,7 @@
         <h3 class="month">{{date | date:'MMMM' | phrase}}</h3>
     </div>
 
-    <p class="text-center no-available-times hide-for-small" *ngIf="!dayService.loading && qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
+    <p class="text-center no-available-times hide-for-small" *ngIf="qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
 
     <div *ngIf="!bookingService.loading">
         <bo-booking-time

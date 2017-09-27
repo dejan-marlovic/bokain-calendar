@@ -32,8 +32,6 @@ abstract class WeekBase
       weekDates[i] = iDate;
       iDate = iDate.add(const Duration(days: 1));
     }
-
-    print(weekDates);
   }
 
   @Output('dateClick')

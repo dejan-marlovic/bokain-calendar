@@ -25,7 +25,6 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnInit, OnDe
   @override
   void ngOnInit()
   {
-    super.ngOnInit();
     _dayAddedListener = dayService.onChildAdded.listen((_) => _groupIncrements());
     _dayUpdatedListener = dayService.onChildUpdated.listen((_) => _groupIncrements());
     _dayRemovedListener = dayService.onChildRemoved.listen((_) => _groupIncrements());

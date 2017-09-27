@@ -6,8 +6,8 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_calendar/src/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_calendar/src/pipes/week_pipe.dart';
+import 'package:bokain_calendar/bokain_calendar.dart';
+import '../../pipes/week_pipe.dart';
 
 @Component(
     selector: 'bo-month-calendar',
@@ -64,6 +64,8 @@ class MonthCalendarComponent implements OnInit, OnDestroy
     {
       monthDays[i] = new Day(null, salon?.id, firstDate.add(new Duration(days: i)));
     }
+
+    _dayService.cancelStreaming();
     _dayService.streamAll(params);
   }
 
@@ -83,12 +85,10 @@ class MonthCalendarComponent implements OnInit, OnDestroy
    */
   bool highlighted(Day day)
   {
-    bool populated = day.isPopulated(salon?.id, user?.id);
-
     /**
      * The day has no active schedule, there's no way it can be highlighted
      */
-    if (!populated) return false;
+    if (!day.isPopulated(salon?.id, user?.id)) return false;
 
     /**
      * No service specified, return true to indicate that the day has an active schedule
@@ -156,7 +156,7 @@ class MonthCalendarComponent implements OnInit, OnDestroy
   Iterable<String> _getQualifiedRoomIdsForIncrement(Increment increment)
   {
     Iterable<Room> rooms = _salonService.getRooms(salon.roomIds).where((room) =>
-    room.serviceIds.contains(service.id) && room.status == "active" && bookingService.findCached(increment.startTime, room.id) == null);
+    room.serviceIds.contains(service.id) && room.status == "active" && bookingService.getByTimeAndRoomId(increment.startTime, room.id) == null);
     return rooms.map((r) => r.id);
   }
 

@@ -7,7 +7,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart' show MaterialIconComponent;
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_calendar/src/components/increment_component/increment_component.dart';
+import '../../components/increment_component/increment_component.dart';
 
 @Component(
     selector: 'bo-increment-group',
@@ -33,7 +33,6 @@ class IncrementGroupComponent implements OnInit, OnDestroy
       booking = await bookingService.fetch(us.bookingId);
       if (booking != null)
       {
-        print(booking);
         customer = await customerService.fetch(booking.customerId);
         service = await serviceService.fetch(booking.serviceId);
       }

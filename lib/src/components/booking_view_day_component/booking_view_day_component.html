@@ -3,7 +3,6 @@
         <h3 class="margin-top-none margin-bottom-none" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="margin-top-none margin-bottom-none">{{date | date:'dd'}}</h1>
         <h3 class="margin-top-none month">{{date | date:'MMMM' | phrase}}</h3>
-        <!--<material-spinner *ngIf="dayService.loading"></material-spinner>-->
     </div>
     <div>
         <bo-increment-group

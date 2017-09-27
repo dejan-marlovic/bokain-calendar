@@ -6,18 +6,16 @@ abstract class DayBase
 {
   DayBase(this.bookingService, this.dayService, this.salonService, this.userService);
 
-  void ngOnInit()
-  {
-    _bufferDay = new Day(null, salon.id, _date);
-  }
-
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
     if (changes.containsKey("date"))
     {
+      _bufferDay = new Day(null, salon.id, _date);
       /**
        * Stream today
        */
+      dayService.cancelStreaming();
+      dayService.cachedModels.clear();
       dayService.streamAll(new FirebaseQueryParams(limitTo: 100, searchProperty: "start_time", searchValue: ModelBase.timestampFormat(_date)));
     }
   }
@@ -26,7 +24,7 @@ abstract class DayBase
   {
     if (salon == null) return null;
 
-    Iterable<Day> days = dayService.streamedModels.values;
+    Iterable<Day> days = dayService.cachedModels.values;
     return days.firstWhere((d) => d.salonId == salon.id && (user == null || d.containsUser(user.id)), orElse: () => _bufferDay);
   }
 

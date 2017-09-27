@@ -7,8 +7,8 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_calendar/src/components/increment_component/increment_component.dart';
-import 'package:bokain_calendar/src/components/day_base/day_base.dart';
+import '../../components/increment_component/increment_component.dart';
+import '../../components/day_base/day_base.dart';
 
 @Component(
     selector: 'bo-schedule-day',
@@ -18,7 +18,7 @@ import 'package:bokain_calendar/src/components/day_base/day_base.dart';
     providers: const [DayService],
     pipes: const [DatePipe, PhrasePipe]
 )
-class ScheduleDayComponent extends DayBase implements OnInit, OnChanges, OnDestroy
+class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
 {
   ScheduleDayComponent(BookingService bs, DayService ds, SalonService ss, UserService us, this._customerService, this._mailService, this._phraseService, this._serviceService) : super(bs, ds, ss, us);
 
@@ -71,7 +71,9 @@ class ScheduleDayComponent extends DayBase implements OnInit, OnChanges, OnDestr
          */
         if (us.state == null) inc.userStates.remove(user.id);
       });
-      dayService.set(day.id, day).then((_) => firstHighlighted = lastHighlighted = null);
+
+      if (day.id != null) dayService.set(day.id, day).then((_) => firstHighlighted = lastHighlighted = null);
+      else dayService.push(day).then((_) => firstHighlighted = lastHighlighted = null);
     }
   }
 

@@ -20,10 +20,11 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
 {
   BookingDetailsComponent(
       this._router,
-      this.phrase,
+      this._phraseService,
       this._billogramService,
       this.bookingService,
       this.customerService,
+      this._dayService,
       this.salonService,
       this.serviceService,
       this.serviceAddonService,
@@ -66,9 +67,9 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
     params["start_time"] = _mailerService.formatHM(booking.startTime);
     params["end_time"] = _mailerService.formatHM(booking.endTime);
     params["salon_phone"] = salon.phone;
-    _mailerService.mail(phrase.get('email_cancel_booking', params: params), phrase.get('booking_cancellation'), customer.email);
+    _mailerService.mail(_phraseService.get('email_cancel_booking', params: params), _phraseService.get('booking_cancellation'), customer.email);
 
-    await bookingService.patchRemove(booking, update_remote: true);
+    await bookingService.patchRemove(booking, customerService, _dayService, salonService, userService);
     await bookingService.remove(booking.id);
     booking = null;
     confirmModalOpen = false;
@@ -118,7 +119,8 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   final BillogramService _billogramService;
   final BookingService bookingService;
   final CustomerService customerService;
-  final PhraseService phrase;
+  final DayService _dayService;
+  final PhraseService _phraseService;
   final SalonService salonService;
   final ServiceService serviceService;
   final ServiceAddonService serviceAddonService;
