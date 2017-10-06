@@ -92,7 +92,7 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy
       booking.roomId = rooms.first;
 
       increment.userStates[booking.userId].state = "open";
-      dayService.set(day.id, day);
+      dayService.set(day);
       onTimeSelectController.add(booking);
     }
   }

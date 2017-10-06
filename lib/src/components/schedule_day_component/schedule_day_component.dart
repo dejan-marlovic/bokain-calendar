@@ -72,8 +72,17 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
         if (us.state == null) inc.userStates.remove(user.id);
       });
 
-      if (day.id != null) dayService.set(day.id, day).then((_) => firstHighlighted = lastHighlighted = null);
-      else dayService.push(day).then((_) => firstHighlighted = lastHighlighted = null);
+
+
+      if (day.id != null)
+      {
+        await dayService.set(day);
+      }
+      else
+      {
+        await dayService.push(day);
+      }
+      firstHighlighted = lastHighlighted = null;
     }
   }
 
@@ -135,7 +144,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
       await bookingService.remove(booking_id);
     }
 
-    await dayService.set(day.id, day);
+    await dayService.set(day);
     alertVisible = false;
   }
 

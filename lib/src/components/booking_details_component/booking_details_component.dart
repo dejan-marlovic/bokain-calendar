@@ -56,7 +56,6 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   {
     // Generate booking confirmation email
     Map<String, String> params = new Map();
-
     params["customer_firstname"] = customer.firstname;
     params["service_name"] = service?.name;
     params["customer_name"] = "${customer?.firstname} ${customer?.lastname}";
@@ -79,7 +78,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   Future toggleNoshow() async
   {
     booking.noshow = !booking.noshow;
-    await bookingService.set(booking.id, booking);
+    await bookingService.set(booking);
   }
 
   Future generateInvoice() async
@@ -88,7 +87,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
     {
       await _billogramService.generateNoShow(booking, customer, [service], addons);
       booking.invoiceSent = true;
-      await bookingService.set(booking.id, booking);
+      await bookingService.set(booking);
     } on Exception catch (e)
     {
       print(e);

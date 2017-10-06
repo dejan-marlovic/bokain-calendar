@@ -24,6 +24,8 @@ abstract class DayBase
   {
     if (salon == null) return null;
 
+    print(dayService.cachedModels);
+
     Iterable<Day> days = dayService.cachedModels.values;
     return days.firstWhere((d) => d.salonId == salon.id && (user == null || d.containsUser(user.id)), orElse: () => _bufferDay);
   }

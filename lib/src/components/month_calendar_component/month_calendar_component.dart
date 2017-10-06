@@ -14,7 +14,7 @@ import '../../pipes/week_pipe.dart';
     styleUrls: const ['../calendar_component.css','month_calendar_component.css'],
     templateUrl: 'month_calendar_component.html',
     directives: const [BookingDetailsComponent, CORE_DIRECTIVES, materialDirectives],
-    providers: const [DayService],
+    providers: const [],
     pipes: const [DatePipe, PhrasePipe, WeekPipe]
 )
 class MonthCalendarComponent implements OnInit, OnDestroy
