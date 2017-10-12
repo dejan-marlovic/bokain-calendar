@@ -12,8 +12,20 @@
             </material-icon>
         </h1>
         <h3 class="margin-top-none month">{{date | date:'MMMM' | phrase}}</h3>
+        <div class="row">
+            <div class="col text-left">
+                <fo-select
+                        label="presets"
+                        [disabled]="dayService.loading || day.hasBookings(user?.id)"
+                        [fullWidth]="true"
+                        [options]="timePresetOptions"
+                        [selectedModel]="selectedPreset"
+                        (selectedModelChange)="applyPreset($event)">
+                </fo-select>
+            </div>
+        </div>
     </div>
-    <div *ngIf="user != null">
+    <div *ngIf="user != null && day != null">
         <bo-increment
                 *ngFor="let increment of day.increments"
                 [increment]="increment"

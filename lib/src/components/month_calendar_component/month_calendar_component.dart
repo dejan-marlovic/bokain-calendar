@@ -119,7 +119,6 @@ class MonthCalendarComponent implements OnInit, OnDestroy
     DateTime previousEndTime;
 
     /// Make sure all increments covered by the service's duration is available
-    ///
     Iterable<Increment> durationCoveredIncrements = day.increments.where((di) =>
     di.startTime.isBefore(endTime) && di.endTime.isAfter(startTime));
 

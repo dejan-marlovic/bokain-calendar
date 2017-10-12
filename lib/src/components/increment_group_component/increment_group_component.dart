@@ -13,16 +13,16 @@ import '../../components/increment_component/increment_component.dart';
     selector: 'bo-increment-group',
     styleUrls: const ['../calendar_component.css', 'increment_group_component.css'],
     templateUrl: 'increment_group_component.html',
-    directives: const [CORE_DIRECTIVES, IncrementComponent, MaterialIconComponent]
+    directives: const [CORE_DIRECTIVES, IncrementComponent, MaterialIconComponent],
 )
-class IncrementGroupComponent implements OnInit, OnDestroy
+class IncrementGroupComponent extends ComponentState implements OnInit, OnDestroy
 {
   IncrementGroupComponent(this.bookingService, this.serviceService, this.customerService, this._phraseService)
   {
     timer = new Timer.periodic(const Duration(minutes:1), (t) => now = new DateTime.now());
   }
 
-  Future ngOnInit() async
+  void ngOnInit()
   {
     if (increments.isEmpty) return;
     Increment i = increments.first;
@@ -30,12 +30,19 @@ class IncrementGroupComponent implements OnInit, OnDestroy
 
     if (us != null)
     {
-      booking = await bookingService.fetch(us.bookingId);
-      if (booking != null)
+      bookingService.fetch(us.bookingId).then((b)
       {
-        customer = await customerService.fetch(booking.customerId);
-        service = await serviceService.fetch(booking.serviceId);
-      }
+        setState(()
+        {
+          booking = b;
+          if (booking != null)
+          {
+            customer = customerService.get(booking.customerId);
+            service = serviceService.get(booking.serviceId);
+          }
+        });
+      });
+
       calendarState = us.state;
     }
   }

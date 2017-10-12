@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
+import 'dart:async';
 import 'dart:math';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
@@ -17,14 +17,15 @@ import '../../components/day_base/day_base.dart';
     templateUrl: 'booking_add_day_component.html',
     directives: const [BookingTimeComponent, CORE_DIRECTIVES, IncrementComponent, materialDirectives],
     providers: const [DayService],
-    pipes: const [DatePipe, PhrasePipe]
+    pipes: const [DatePipe, PhrasePipe],
+    changeDetection: ChangeDetectionStrategy.Stateful
 )
-class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy
+class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy //, AfterViewInit
 {
   BookingAddDayComponent(BookingService bs, DayService ds, SalonService ss, UserService us) : super(bs, ds, ss, us);
 
   @override
-  ngOnChanges(Map<String, SimpleChange> changes)
+  Future ngOnChanges(Map<String, SimpleChange> changes) async
   {
     totalDuration = (service == null) ? const Duration(seconds: 1) : new Duration(minutes: service.durationMinutes);
     if (serviceAddons != null)
@@ -44,16 +45,12 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy
 
     if (changes.containsKey("date"))
     {
-      qualifiedIncrements = [];
-      dayService.onChildAdded.first.then((ModelBase d)
-      {
-        qualifiedIncrements = (salon == null || salon.status != 'active' || service == null || service.status != 'active') ? [] : (d as Day).increments.where(_available);
-      });
-
-      // This will refresh day stream to mirror current date only
+      dayService.onChildAdded.first.then((_) => _updateQualifiedIncrements());
+      // This will refresh day stream to current date
       super.ngOnChanges(changes);
     }
-    else qualifiedIncrements = (day == null || salon == null || salon.status != 'active' || service == null || service.status != 'active') ? [] : day.increments.where(_available);
+
+    _updateQualifiedIncrements();
   }
 
   @override
@@ -155,6 +152,15 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
+  void _updateQualifiedIncrements()
+  {
+    setState(()
+    {
+      qualifiedIncrements = (day.increments.isEmpty || salon == null || salon.status != 'active' || service == null || service.status != 'active')
+          ? [] : day.increments.where(_available);
+    });
+  }
+
   Iterable<Increment> qualifiedIncrements = new List();
   String selectedRoomId;
   final StreamController<Booking> onTimeSelectController = new StreamController();
@@ -173,5 +179,6 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy
   @Output('timeSelect')
   Stream<Booking> get onTimeSelect => onTimeSelectController.stream;
 }
+
 
 

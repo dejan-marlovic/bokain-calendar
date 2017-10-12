@@ -37,19 +37,20 @@
         <material-button
                 raised
                 class="red"
+                [disabled]="bookingService.loading || billogramService.loading"
                 (trigger)="confirmModalOpen = true">
             {{'booking_cancel' | phrase}}
         </material-button>
         <material-button
                 raised
-                [disabled]="booking.invoiceSent"
+                [disabled]="bookingService.loading || billogramService.loading || booking.invoiceSent"
                 class="red"
                 (trigger)="toggleNoshow()">
             {{'no-show' | phrase}}&nbsp;<material-icon icon="check" *ngIf="booking.noshow" size="medium"></material-icon>
         </material-button>
         <material-button
                 raised
-                [disabled]="booking.invoiceSent"
+                [disabled]="bookingService.loading || billogramService.loading || booking.invoiceSent"
                 *ngIf="booking.noshow"
                 (trigger)="generateInvoice()">
             {{'send_invoice' | phrase}}&nbsp;<material-icon icon="check" *ngIf="booking.invoiceSent" size="medium"></material-icon>

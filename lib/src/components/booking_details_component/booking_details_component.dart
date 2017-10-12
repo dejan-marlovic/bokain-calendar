@@ -21,7 +21,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   BookingDetailsComponent(
       this._router,
       this._phraseService,
-      this._billogramService,
+      this.billogramService,
       this.bookingService,
       this.customerService,
       this._dayService,
@@ -85,7 +85,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   {
     try
     {
-      await _billogramService.generateNoShow(booking, customer, [service], addons);
+      await billogramService.generateNoShow(booking, customer, [service], addons);
       booking.invoiceSent = true;
       await bookingService.set(booking);
     } on Exception catch (e)
@@ -115,7 +115,7 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
   num _totalPrice = 0;
   bool confirmModalOpen = false;
   final StreamController<Booking> _onBookingChangeController = new StreamController();
-  final BillogramService _billogramService;
+  final BillogramService billogramService;
   final BookingService bookingService;
   final CustomerService customerService;
   final DayService _dayService;

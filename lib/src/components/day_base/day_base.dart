@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:bokain_models/bokain_models.dart';
 
-abstract class DayBase
+abstract class DayBase extends ComponentState
 {
   DayBase(this.bookingService, this.dayService, this.salonService, this.userService);
 
@@ -16,16 +16,14 @@ abstract class DayBase
        */
       dayService.cancelStreaming();
       dayService.cachedModels.clear();
-      dayService.streamAll(new FirebaseQueryParams(limitTo: 100, searchProperty: "start_time", searchValue: ModelBase.timestampFormat(_date)));
+      dayService.streamAll(new FirebaseQueryParams(limitTo: 50, searchProperty: "start_time", searchValue: ModelBase.timestampFormat(_date)));
     }
   }
 
   Day get day
   {
-    if (salon == null) return null;
-
-    Iterable<Day> days = dayService.cachedModels.values;
-    return days.firstWhere((d) => d.salonId == salon.id && (user == null || d.containsUser(user.id)), orElse: () => _bufferDay);
+    if (salon == null || dayService.cachedModels.isEmpty) return _bufferDay;
+    else return dayService.cachedModels.values.firstWhere((d) => (d as Day).salonId == salon.id, orElse: () => _bufferDay);
   }
 
   void ngOnDestroy()

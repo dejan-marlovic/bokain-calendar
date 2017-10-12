@@ -33,7 +33,7 @@ class WeekStepperComponent implements OnDestroy
   {
     surroundingDates.clear();
     DateTime first = weekDates.first.add(const Duration(days: -7 * 4));
-    DateTime last = weekDates.first.add(const Duration(days: 7 * 4));
+    DateTime last = weekDates.first.add(const Duration(days: 7 * 5));
     DateTime iDate = first;
 
     while (iDate.isBefore(last))
