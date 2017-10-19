@@ -25,7 +25,7 @@ class MonthCalendarComponent implements OnInit, OnDestroy
     {
       for (int i = 0; i < 35; i++)
       {
-        if (monthDays[i].startTime.isAtSameMomentAs((day as Day).startTime))
+        if (monthDays[i].startTime.isAtSameMomentAs(day.startTime))
         {
           monthDays[i] = day;
           break;
@@ -167,7 +167,7 @@ class MonthCalendarComponent implements OnInit, OnDestroy
   List<Day> monthDays = new List(35);
   final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<DateTime> onChangeMonthController = new StreamController();
-  StreamSubscription<Day> onDayAddedListener;
+  StreamSubscription<ModelBase> onDayAddedListener;
 
   @Input('date')
   DateTime date;

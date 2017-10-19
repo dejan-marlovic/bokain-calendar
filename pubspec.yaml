@@ -7,22 +7,15 @@ version: 0.0.1
 environment:
   sdk: '>=1.24.2 <2.0.0'
 
-web:
-  compiler:
-    debug: dartdevc
-
 dependencies:
   angular: "^4.0.0"
-  angular_components: "^0.6.0"
+  angular_components: "^0.8.0"
   angular_router: "^1.0.1"
   bokain_models:
     path: ../bokain-models/
 
 dev_dependencies:
-  browser: ^0.10.0+2
-  dart_to_js_script_rewriter: ^1.0.3
-
+  sass_builder: ^1.0.1
 
 transformers:
 - angular
-- dart_to_js_script_rewriter

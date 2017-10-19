@@ -139,7 +139,7 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy //,
     if (user == null)
     {
       return increment.userStates.keys.where((id) =>
-          (userService.get(id) as User)?.status == 'active' &&
+          userService.get(id)?.status == 'active' &&
           service.userIds.contains(id) &&
           (increment.userStates[id].bookingId == null && increment.userStates[id].state == "open") ||
           (includeMargins && increment.userStates[id].state == "margin"));

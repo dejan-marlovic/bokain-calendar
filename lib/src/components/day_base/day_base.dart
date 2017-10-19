@@ -23,7 +23,7 @@ abstract class DayBase extends ComponentState
   Day get day
   {
     if (salon == null || dayService.cachedModels.isEmpty) return _bufferDay;
-    else return dayService.cachedModels.values.firstWhere((d) => (d as Day).salonId == salon.id, orElse: () => _bufferDay);
+    else return dayService.cachedModels.values.firstWhere((d) => d.salonId == salon.id, orElse: () => _bufferDay);
   }
 
   void ngOnDestroy()
