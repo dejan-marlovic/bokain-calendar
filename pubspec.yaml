@@ -13,9 +13,9 @@ dependencies:
   angular_router: "^1.0.1"
   bokain_models:
     path: ../bokain-models/
-
-dev_dependencies:
   sass_builder: ^1.0.1
 
 transformers:
+- sass_builder:
+    outputExtension: .css
 - angular
